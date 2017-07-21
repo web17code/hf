@@ -1,0 +1,66 @@
+
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote,
+dl, dt, dd, ul, ol, li,span
+pre,
+form, fieldset, legend, button, input, textarea,
+th, td{
+  margin: 0;
+  padding: 0;
+}
+body,
+button, input, select, textarea{
+  font: 14px/1.5 微软雅黑, \5b8b\4f53, 微软雅黑;
+}
+h1, h2, h3, h4, h5, h6 { font-size: 100%; font-weight: normal;}
+address, cite, dfn, em, var { font-style: normal; }
+code, kbd, pre, samp { font-family: '微软雅黑',courier new, courier, monospace; }
+small { font-size: 12px; }
+ul, ol { list-style: none; }
+a { text-decoration: none;cursor: pointer;font-size: 14px}
+a:hover { text-decoration: none;}
+p{
+  font-size: 16px;
+}
+
+sup { vertical-align: text-top; }
+sub { vertical-align: text-bottom; }
+fieldset, img { border: 0; }
+button, input, select, textarea { font-size: 100%;outline: none; }
+table { border-collapse: collapse; border-spacing: 0; }
+article, aside, details, figcaption, figure, footer,header, menu, nav,
+summary, time, mark, audio, video {
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+mark { background: #ff0; }
+
+/*公共样式*/
+header>div{
+  color: #156765;
+}
+header button{
+  border: 1px solid #156765;
+  color: #156765;
+}
+nav{
+  border-bottom: 1px solid #84afaf;
+}
+nav ul li.active a{
+  color: #156765;
+}
+nav ul li.active b{
+  background: #156765;
+}
+.addyy{
+  color: #156765;
+}
+.section-left ul li.active{
+  color: #156765;
+}
+.section-right{
+  border-left:1px solid #84afaf;
+}
+.section-left ul li.active a{
+  color: #156765;
+}
