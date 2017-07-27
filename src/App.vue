@@ -423,7 +423,7 @@
           ).then(function (data) {
             this.userInfo = data.data.data;
             //头像显示
-            if(this.userInfo.ZP==""){
+            if(this.userInfo.ZP==""&&this.userInfo.ZP==null&&this.userInfo.ZP==undefined){
               if (this.userInfo.GENDER === '男') {
                 this.touxiang = this.host + 'portalseting/img/default/head-man.png'
               } else if (this.userInfo.GENDER === '女') {
