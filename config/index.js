@@ -4,8 +4,8 @@ var path = require('path')
 module.exports = {
   build: {
     env: require('./prod.env'),
-    index: path.resolve(__dirname, 'D:\\workspace\\data\\datacenter\\datacenter-teacherportal-web\\src\\main\\webapp\\index.html'),
-    assetsRoot: path.resolve(__dirname, 'D:\\workspace\\data\\datacenter\\datacenter-teacherportal-web\\src\\main\\webapp'),
+    index: path.resolve(__dirname,"../dist/buildHTML.html" /*'D:\\workspace\\data\\datacenter\\datacenter-teacherportal-web\\src\\main\\webapp\\index.html'*/),
+    assetsRoot: path.resolve(__dirname,"../dist" /*'D:\\workspace\\data\\datacenter\\datacenter-teacherportal-web\\src\\main\\webapp'*/),
     assetsSubDirectory: 'static',
     assetsPublicPath: './',
     productionSourceMap: true,
@@ -23,7 +23,7 @@ module.exports = {
   },
   dev: {
     env: require('./dev.env'),
-    port: 8088,
+    port: 8022,
     autoOpenBrowser: true,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',

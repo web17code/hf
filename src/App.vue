@@ -390,7 +390,8 @@
     mounted: function () {
       // this.$nextTick(function () {
       this.$http.get(
-        'https://portal.qpedu.cn/TeacherPortal/json/Common_getContestPath.json?rand=' + Math.random()
+        /*'https://portal.qpedu.cn/TeacherPortal/json/Common_getContestPath.json?rand=' + Math.random()*///线上
+        'http://192.168.1.217:8089/datacenter-teacherportal-web/json/Common_getContestPath.json?rand=' + Math.random()
       ).then(function (data) {
         var host = data.data.data
         this.host = host;
