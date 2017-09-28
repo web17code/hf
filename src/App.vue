@@ -590,8 +590,28 @@
           this.input1 = this.input2 = this.input3 = null
           return
         }
+        if (this.input2.length>20||this.input2.length<6) {
+          this.$alert('密码长度为6-20位', '系统提示', {
+                confirmButtonText: '确定'
+          })
+          this.input1 = this.input2 = this.input3 = null
+          return
+        }
+
+          var modes = 0;
+          if (/\d/.test(this.input2)) modes++; //数字
+          if (/[a-z]/.test(this.input2)) modes++; //小写
+          if (/[A-Z]/.test(this.input2)) modes++; //大写
+          if (/\W/.test(this.input2)) modes++; //特殊字符
+          if(modes<3){
+              this.$alert('密码必须大写字母、小写字母、数字，特殊字符中任意三种！', '系统提示', {
+                  confirmButtonText: '确定'
+              })
+              this.input1 = this.input2 = this.input3 = null
+              return
+          }
         if (this.input2 !== this.input3) {
-          this.$alert('两次输入密码不一致', '标题名称', {
+          this.$alert('两次输入密码不一致', '系统提示', {
             confirmButtonText: '确定'
           })
           this.input1 = this.input2 = this.input3 = null
