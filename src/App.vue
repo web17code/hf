@@ -397,6 +397,7 @@
                         {'src': null, 'name': 'RTX', 'isRtx': true},
                         {'src': null, 'name': '消息'},
                         {'src': null, 'name': '邮箱', 'email': true},
+                        {'src': null, 'name': '云盘'},
                         {'src': null, 'name': '换肤'}
                     ]
                 },
@@ -435,11 +436,12 @@
         mounted: function () {
             // this.$nextTick(function () {
             this.$http.get(
-                    'http://192.168.1.111/datacenter-teacherportal-web/json/Common_getContestPath.json?rand=' + Math.random()
-                /*'https://portal.qpedu.cn/TeacherPortal/json/Common_getContestPath.json?rand=' + Math.random()//线上*/
+                    /*"http://demo.zhunedu.com/portal/json/Common_getContestPath.json?rand=' + Math.random()"*/
+                    /*'http://192.168.1.111/datacenter-teacherportal-web/json/Common_getContestPath.json?rand=' + Math.random()*/
+                'https://portal.qpedu.cn/TeacherPortal/json/Common_getContestPath.json?rand=' + Math.random()//线上
                     /*'http://192.168.1.217:8089/datacenter-teacherportal-web/json/Common_getContestPath.json?rand=' + Math.random()*/
             ).then(function (data) {
-                var host = data.data.data
+                var host = data.data.data;
                 this.host = host;
                 this.uploadUrl = this.host + "json/Upload_image_data.json"
                 this.$nextTick(function () {
@@ -461,7 +463,8 @@
                         this.skin.heads[0].src = this.host + getData.rtxIcon
                         this.skin.heads[1].src = this.host + getData.newsIcon
                         this.skin.heads[2].src = this.host + getData.emailIcon
-                        this.skin.heads[3].src = this.host + getData.themeIcon
+                        this.skin.heads[3].src = this.host + getData.yunIcon
+                        this.skin.heads[4].src = this.host + getData.themeIcon
                     })
                     //          初始化用户信息
 //          this.$nextTick(function () {
@@ -470,7 +473,7 @@
                     ).then(function (data) {
                         this.userInfo = data.data.data;
                         //头像显示
-                        if (this.userInfo.ZP == "" && this.userInfo.ZP == null && this.userInfo.ZP == undefined) {
+                        if (this.userInfo.ZP == "" || this.userInfo.ZP == null || this.userInfo.ZP == undefined) {
                             if (this.userInfo.GENDER === '男') {
                                 this.touxiang = this.host + 'portalseting/img/default/head-man.png'
                             } else if (this.userInfo.GENDER === '女') {
@@ -512,7 +515,8 @@
                 this.skin.heads[0].src = this.host + this.clickSkin[b].rtxIcon
                 this.skin.heads[1].src = this.host + this.clickSkin[b].newsIcon
                 this.skin.heads[2].src = this.host + this.clickSkin[b].emailIcon
-                this.skin.heads[3].src = this.host + this.clickSkin[b].themeIcon
+                this.skin.heads[3].src = this.host + this.clickSkin[b].yunIcon
+                this.skin.heads[4].src = this.host + this.clickSkin[b].themeIcon
                 this.skin.color = this.clickSkin[b].wordColor
             },
             // 更换背景
@@ -543,7 +547,8 @@
                         this.skin.heads[0].src = this.host + changeSkin.rtxIcon
                         this.skin.heads[1].src = this.host + changeSkin.newsIcon
                         this.skin.heads[2].src = this.host + changeSkin.emailIcon
-                        this.skin.heads[3].src = this.host + changeSkin.themeIcon
+                        this.skin.heads[3].src = this.host + changeSkin.yunIcon
+                        this.skin.heads[4].src = this.host + changeSkin.themeIcon
                         this.skin.color = changeSkin.wordColor
                     }
                 }
@@ -580,8 +585,12 @@
                 if (_index === 2) {
                     window.open(this.host + '/mail163.jsp')
                 }
+//        点击云盘
+                if (_index === 3){
+                    window.open('https://ypweb.qpedu.cn')
+                }
 //        点击换肤
-                if (_index === 3) {
+                if (_index === 4) {
                     this.$nextTick(function () {
                         this.$http.get(
                             this.host + 'json/ThemeFestival_queryForDefaultList_selectThemeFestivalDefault.json'
