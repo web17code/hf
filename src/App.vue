@@ -262,6 +262,7 @@
       <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
       </span>
         </el-dialog>
+        <!--add change changePwd-->
         <el-dialog
                 title="修改密码:"
                 :visible.sync="dialogVisible2">
@@ -283,6 +284,26 @@
             <span slot="footer" class="dialog-footer">
       <el-button @click="dialogVisible2 = false">取 消</el-button>
       <el-button type="primary" @click="pwdConfirm">确 定</el-button>
+      </span>
+        </el-dialog>
+        <!--add change changeTel-->
+        <el-dialog
+                title="修改联系方式:"
+                :visible.sync="dialogVisible4">
+            <div class="passWd">
+                <div>
+                    <label>现联系方式:</label>
+                    <el-input v-model="inputTel" placeholder="" readonly="true"></el-input>
+                </div>
+                <div>
+                    <label>新联系方式:</label>
+                    <el-input type="text" v-model="inputTel_will" placeholder="请输入新联系方式"></el-input>
+                </div>
+            </div>
+
+            <span slot="footer" class="dialog-footer">
+      <el-button @click="dialogVisible4 = false">取 消</el-button>
+      <el-button type="primary" @click="TelConfirm">确 定</el-button>
       </span>
         </el-dialog>
         <!--add change avatar-->
@@ -309,7 +330,6 @@
       <el-button type="primary" @click="avatarConfirm">保存</el-button>
       </span>
         </el-dialog>
-        <!--add change avatar-->
 
         <header>
             <div class="wrap">
@@ -322,7 +342,7 @@
                         <li v-for="(head,index) in skin.heads" @click="changeSkin2(index)">
                             <img :src="head.src" alt="">
                             <a :style="{color:skin.color}">{{head.name}}
-                                <OBJECT classid=clsid:5EEEA87D-160E-4A2D-8427-B6C333FEDA4D  id="RTXAX"
+                                <OBJECT classid=clsid:5EEEA87D-160E-4A2D-8427-B6C333FEDA4D   id="RTXAX"
                                         v-if="head.isRtx"></OBJECT>
                                 <el-badge :value=emailNum class="item" v-if="head.email">
                                 </el-badge>
@@ -338,6 +358,7 @@
             </span>
                         <el-dropdown-menu slot="dropdown">
                             <el-dropdown-item command="baseInfo">基础信息</el-dropdown-item>
+                            <el-dropdown-item command="changeTel">修改联系方式</el-dropdown-item>
                             <el-dropdown-item command="changePwd">修改密码</el-dropdown-item>
                             <el-dropdown-item command="changeavatar">更换头像</el-dropdown-item>
                         </el-dropdown-menu>
@@ -384,10 +405,13 @@
                 dialogVisible: false,
                 dialogVisible2: false,
                 dialogVisible3: false,//上传头像
+                dialogVisible4: false,//修改联系方式
 //        修改密码
                 input1: null,
                 input2: null,
                 input3: null,
+                inputTel: "暂无",
+                inputTel_will: null,
                 skin: {
                     'msg': null,
                     'bgImg': null,
@@ -436,9 +460,10 @@
         mounted: function () {
             // this.$nextTick(function () {
             this.$http.get(
+                    /*"http://192.168.1.217:8089/datacenter-teacherportal-web/json/Common_getContestPath.json?rand=' + Math.random()"*/
                     /*"http://demo.zhunedu.com/portal/json/Common_getContestPath.json?rand=' + Math.random()"*/
                     /*'http://192.168.1.111/datacenter-teacherportal-web/json/Common_getContestPath.json?rand=' + Math.random()*/
-                'https://portal.qpedu.cn/TeacherPortal/json/Common_getContestPath.json?rand=' + Math.random()//线上
+                    'https://portal.qpedu.cn/TeacherPortal/json/Common_getContestPath.json?rand=' + Math.random()//线上
                     /*'http://192.168.1.217:8089/datacenter-teacherportal-web/json/Common_getContestPath.json?rand=' + Math.random()*/
             ).then(function (data) {
                 var host = data.data.data;
@@ -472,6 +497,7 @@
                         host + 'json/Common_getUser_data.json?rand=' + Math.random()
                     ).then(function (data) {
                         this.userInfo = data.data.data;
+                        this.inputTel = data.data.data.PHONE ? (localStorage.getItem("ipone")==null?data.data.data.PHONE:localStorage.getItem("ipone")) : "暂无";
                         //头像显示
                         if (this.userInfo.ZP == "" || this.userInfo.ZP == null || this.userInfo.ZP == undefined) {
                             if (this.userInfo.GENDER === '男') {
@@ -586,7 +612,7 @@
                     window.open(this.host + '/mail163.jsp')
                 }
 //        点击云盘
-                if (_index === 3){
+                if (_index === 3) {
                     window.open('https://ypweb.qpedu.cn')
                 }
 //        点击换肤
@@ -613,7 +639,7 @@
                 if (command === 'baseInfo') {
                     this.dialogVisible = true
                 }
-//        修改密码
+//      修改密码确定
                 if (command === 'changePwd') {
                     this.dialogVisible2 = true
                 }
@@ -621,8 +647,13 @@
                 if (command === 'changeavatar') {
                     this.dialogVisible3 = true
                 }
+//        修改联系电话
+                if (command === 'changeTel') {
+                    this.dialogVisible4 = true
+                }
             },
-//      修改密码确定
+
+            //        修改密码
             pwdConfirm () {
                 if (this.input1 === null) {
                     this.$alert('请输入原密码', '系统提示', {
@@ -743,6 +774,45 @@
                 return isPic && isLt2M;
             },
             /*add methods about change avatar*/
+//      修改联系方式
+            TelConfirm () {
+                var that = this;
+                if (this.inputTel_will === null) {
+                    this.$alert('请输入联系方式', '系统提示', {
+                        confirmButtonText: '确定'
+                    })
+                    this.inputTel_will = null;
+                    return
+                }
+                if (!/[0-9]+/.test(this.inputTel_will)){
+                    this.$alert('请输入正确联系方式', '系统提示', {
+                        confirmButtonText: '确定'
+                    })
+                    this.inputTel_will = null;
+                    return
+                }
+                //提交修改的联系方式
+                this.$http.post(
+                    this.host + 'json/Teacher_changePhone.json', {
+                        userpk:that.userInfo.GUID,
+                        userPhone:that.inputTel_will
+                    }, {emulateJSON: true}
+                ).then(function (data) {
+                    if (data.data.code !== '0000') {
+                        this.$alert(data.data.data, '修改联系方式', {
+                            confirmButtonText: '确定'
+                        })
+                    } else {
+                        localStorage.setItem("ipone", that.inputTel_will);
+                        that.inputTel = that.inputTel_will;
+                        that.inputTel_will = null;
+                        this.$alert('联系方式修改成功', '修改联系方式', {
+                            confirmButtonText: '确定'
+                        })
+                        this.dialogVisible4 = false;
+                    }
+                })
+            },
 //      注销用户
             zhuxiao () {
 //        this.$http.get(this.host + 'logout.jsp').then(function (data) {
