@@ -79,8 +79,8 @@
     <el-tabs v-model="activeName" @tab-click="getColor(ele)" :style="{color:color}">
       <!--<el-tab-pane label="推荐" disabled></el-tab-pane>-->
       <el-tab-pane label="导航" name="first"><my-content :color="color" :host="host"></my-content></el-tab-pane>
-      <el-tab-pane label="视频" name="second"><iframe scrolling="auto" width="100%" height="100%" style="min-height: 520px" src="http://xyys.qpedu.cn/video/toQpIndex.action" frameborder="0"></iframe></el-tab-pane>
-      <el-tab-pane label="图片" name="third"><iframe scrolling="auto" width="100%" height="100%" style="min-height: 520px" src="http://photo.qpedu.cn/Eduplate/PicLibrary/Web/SubjectIndex.aspx" frameborder="0"></iframe></el-tab-pane>
+      <!--<el-tab-pane label="视频" name="second"><iframe scrolling="auto" width="100%" height="100%" style="min-height: 520px" src="http://xyys.qpedu.cn/video/toQpIndex.action" frameborder="0"></iframe></el-tab-pane>
+      <el-tab-pane label="图片" name="third"><iframe scrolling="auto" width="100%" height="100%" style="min-height: 520px" src="http://photo.qpedu.cn/Eduplate/PicLibrary/Web/SubjectIndex.aspx" frameborder="0"></iframe></el-tab-pane>-->
     </el-tabs>
   </nav>
 </template>
