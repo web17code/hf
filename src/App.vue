@@ -346,6 +346,8 @@
                                         v-if="head.isRtx"></OBJECT>
                                 <el-badge :value=emailNum class="item" v-if="head.email">
                                 </el-badge>
+                                <el-badge :value=webMsgNum class="item" v-if="head.webMsg">
+                                </el-badge>
                             </a>
                         </li>
                     </ul>
@@ -399,6 +401,7 @@
             return {
 //        邮件数量
                 emailNum: null,
+                webMsgNum: null,// 站内信
                 touxiang: null,
                 host: null,
 //        模态框
@@ -419,7 +422,7 @@
                     'logo': null,
                     'heads': [
                         {'src': null, 'name': 'RTX', 'isRtx': true},
-                        {'src': null, 'name': '消息'},
+                        {'src': null, 'name': '消息','webMsg':true},
                         {'src': null, 'name': '邮箱', 'email': true},
                         {'src': null, 'name': '云盘'},
                         {'src': null, 'name': '换肤'}
@@ -458,6 +461,7 @@
             }
         },
         mounted: function () {
+            var that = this;
             // this.$nextTick(function () {
             this.$http.get(
                     /*"http://192.168.1.217:8089/datacenter-teacherportal-web/json/Common_getContestPath.json?rand=' + Math.random()"*/
@@ -510,13 +514,26 @@
                         }
 
 //            })
-                    })
-                    //          初始化未读邮件数量
-                    this.$nextTick(function () {
-                        this.$http.post(
-                            host + 'json/Teacher_getUnreadMail163Msg_data.json?rand=' + Math.random()
-                        ).then(function (data) {
-                            this.emailNum = data.data.data.toString()
+                        //初始化站内消息及邮件
+                        //          初始化未读邮件数量
+                        this.$nextTick(function () {
+                            this.$http.post(
+                                host + 'json/Teacher_getUnreadMail163Msg_data.json?rand=' + Math.random()
+                            ).then(function (data) {
+                                this.emailNum = data.data.data.toString()
+                            })
+                        })
+                        //          初始化未读站内信数量
+                        this.$nextTick(function () {
+                            this.$http.post(
+                                'https://msg.qpedu.cn/chApis/inbox/unReadCount?rand=' + Math.random(),{userId:that.userInfo.GUID},{emulateJSON: true}
+                            ).then(function (data) {
+                                if(data.data.code=="0000"){
+                                    this.webMsgNum = data.data.data.toString();
+                                }else{
+                                    this.webMsgNum = 0;
+                                }
+                            })
                         })
                     })
                 })
@@ -529,6 +546,46 @@
                         this.host + 'json/Teacher_getUnreadMail163Msg_data.json?rand=' + Math.random()
                     ).then(function (data) {
                         this.emailNum = data.data.data.toString()
+                    })
+                    /*this.$http({
+                        url: 'https://msg.qpedu.cn/chApis/inbox/unReadCount?rand=' + Math.random(),
+                        method:'POST',
+                        headers: {
+                            'Content-Type': 'x-www-from-urlencoded'
+                        },
+                        data: {
+                            userId:that.userInfo.GUID
+                        }
+                    }).then(function () {
+                        if(data.code="0000"){
+                            this.webMsgNum = data.data.toString();
+                        }
+                    })*/
+                })
+            }, 300000)
+//五分钟查询一次未读站内信
+            setInterval(function () {
+                this.$nextTick(function () {
+                    /*this.$http({
+                        url: 'https://msg.qpedu.cn/chApis/inbox/unReadCount?rand=' + Math.random(),
+                        method:'POST',
+                        headers: {
+                            'Content-Type': 'x-www-from-urlencoded'
+                        },
+                        data: {
+                            userId:that.userInfo.GUID
+                        }
+                    }).then(function () {
+                        if(data.code="0000"){
+                            this.webMsgNum = data.data.toString();
+                        }
+                    })*/
+                    this.$http.post(
+                        'https://msg.qpedu.cn/chApis/inbox/unReadCount?rand=' + Math.random(),{userId:that.userInfo.GUID},{emulateJSON: true}
+                    ).then(function (data) {
+                        if(data.data.code=="0000"){
+                            this.webMsgNum = data.data.data.toString();
+                        }
                     })
                 })
             }, 300000)
